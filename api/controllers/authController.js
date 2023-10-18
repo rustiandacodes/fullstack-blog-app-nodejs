@@ -1,8 +1,8 @@
 const User = require('../model/userModel');
-const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const bcryptSalt = bcrypt.genSaltSync(10);
 const jwtSecret = 'DVVC1OPrPYKJpLTEkJ7RkQ4R1dw5SZxG';
+const bcrypt = require('bcryptjs');
+const bcryptSalt = bcrypt.genSaltSync(10);
 
 const register = async (req, res) => {
   const { name, email, password } = req.body;
@@ -36,4 +36,21 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { register, login };
+const logout = (req, res) => {
+  res.cookie('token', '').json(true);
+};
+
+const profile = (req, res) => {
+  const { token } = req.cookies;
+  if (token) {
+    jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+      if (err) throw err;
+      const { name, email, _id } = await User.findById(userData.id);
+      res.json({ name, email, _id });
+    });
+  } else {
+    res.json(null);
+  }
+};
+
+module.exports = { register, login, logout, profile };

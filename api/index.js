@@ -5,7 +5,8 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 
 // routes functions
-const authRoute = require('./routes/authentication');
+const authRoutes = require('./routes/authRoutes');
+const articleRoutes = require('./routes/articleRoutes');
 
 // application
 const app = express();
@@ -16,7 +17,7 @@ app.use(cookieParser());
 // middleware
 app.use(express.json());
 app.use((req, res, next) => {
-  // cors origin allower
+  // Allow CORS Origin
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
@@ -25,7 +26,8 @@ app.use((req, res, next) => {
 });
 
 // routes
-app.use('/.netlify/functions/api', authRoute);
+app.use('/.netlify/functions/api', authRoutes);
+app.use('/.netlify/functions/api', articleRoutes);
 
 // connect to db
 mongoose
