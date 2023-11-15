@@ -6,6 +6,10 @@
   font-family: 'Montserrat', sans-serif;
 }
 
+body {
+  @apply text-gray-600;
+}
+
 .input-style {
   @apply text-base w-full p-2 focus:outline-none;
 }
