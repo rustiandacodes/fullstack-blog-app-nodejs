@@ -19,7 +19,7 @@ const UserInfo = ({}) => {
   return (
     <>
       {/* user menu */}
-      <Link to={!user ? '/login' : ''} className="relative flex gap-2 items-center justify-around py-2 px-2 md:px-3 rounded-full shadow cursor-pointer" onClick={() => handleMenu()}>
+      <div className="relative flex gap-2 items-center justify-around py-2 px-2 md:px-3 rounded-full shadow cursor-pointer" onClick={() => handleMenu()}>
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
           <path
             strokeLinecap="round"
@@ -34,7 +34,7 @@ const UserInfo = ({}) => {
               <Link>Profile</Link>
             </li>
             <li>
-              <Link>Write</Link>
+              <Link to={'/write'}>Write</Link>
             </li>
             <li>
               <Link>Dashboard</Link>
@@ -46,7 +46,7 @@ const UserInfo = ({}) => {
             </li>
           </ul>
         </div>
-      </Link>
+      </div>
     </>
   );
 };

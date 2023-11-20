@@ -13,7 +13,7 @@ const Header = () => {
           <div className="bg-sky-500 w-12 h-12 flex justify-center items-center text-white">
             <span className="font-bold text-2xl">B</span>
           </div>
-          <span className="text-xl hidden md:block">Blink Media</span>
+          <span className="text-xl hidden font-semibold md:block">Blink Media</span>
         </div>
 
         {/* search */}

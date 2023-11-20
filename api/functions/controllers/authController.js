@@ -44,7 +44,6 @@ const logout = (req, res) => {
 const profile = (req, res) => {
   const { token } = req.cookies;
   if (token) {
-    console.log(token);
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
       if (err) throw err;
       const { name, email, _id } = await User.findById(userData.id);
