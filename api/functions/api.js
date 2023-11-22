@@ -4,6 +4,10 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const serverless = require('serverless-http');
 
+const fs = require('fs');
+const multer = require('multer');
+const photosMiddleware = multer({ dest: 'uploads/' });
+
 // routes functions
 const authRoutes = require('./routes/authRoutes');
 const articleRoutes = require('./routes/articleRoutes');
@@ -13,7 +17,7 @@ const app = express();
 
 // middleware
 app.use(express.json());
-// cookies parser permission
+// cookies permission
 app.use(cookieParser());
 // cookie parser
 app.use((req, res, next) => {
@@ -25,6 +29,21 @@ app.use((req, res, next) => {
 
   console.log(req.path, req.method);
   next();
+});
+
+// uploads photos
+app.use('/.netlify/functions/api/uploads', express.static(__dirname + '/uploads'));
+app.post('/.netlify/functions/api/upload', photosMiddleware.array('photos', 100), (req, res) => {
+  const uploadedFiles = [];
+  for (let i = 0; i < req.files.length; i++) {
+    const { path, originalname } = req.files[i];
+    const parts = originalname.split('.');
+    const ext = parts[parts.length - 1];
+    const newPath = path + '.' + ext;
+    fs.renameSync(path, newPath);
+    uploadedFiles.push(newPath.replace('uploads', ''));
+  }
+  res.json(uploadedFiles);
 });
 
 // routes

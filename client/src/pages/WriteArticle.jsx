@@ -12,6 +12,8 @@ import FroalaEditorView from 'react-froala-wysiwyg/FroalaEditorView';
 const WriteArticle = () => {
   const [title, setTitle] = useState();
   const [model, setModel] = useState();
+  const [photosFile, setPhotosFile] = useState();
+  const [photosNewName, setPhotosNewName] = useState();
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -21,14 +23,35 @@ const WriteArticle = () => {
     setModel(e);
   };
 
+  const uploadPhoto = () => {
+    const files = photosFile;
+    const data = new FormData();
+    for (let i = 0; i < files.length; i++) {
+      data.append('photos', files[i]);
+    }
+    axios
+      .post('/upload', data, {
+        headers: { 'Content-type': 'multipart/form-data' },
+      })
+      .then((response) => {
+        const { data: filenames } = response;
+        setPhotosNewName(filenames);
+      });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    uploadPhoto();
     await axios.post('/create-article', {
       owner: user._id,
       title: title,
       body: model,
+      thumbnail: [photosNewName],
     });
   };
+
+  console.log(photosFile);
+  console.log(photosNewName);
 
   return (
     <div className="mx-auto container py-20">
@@ -43,7 +66,7 @@ const WriteArticle = () => {
         </div>
         <div className="my-5">
           <p className="font-bold mb-2">Thumbnail</p>
-          <input className="border-2 p-5 rounded-lg w-fit" type="file" />
+          <input className="border-2 p-5 rounded-lg w-fit" multiple type="file" onChange={(e) => setPhotosFile(e.target.files)} />
         </div>
         <div className="my-5">
           <p className="font-bold mb-2">Article</p>

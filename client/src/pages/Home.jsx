@@ -18,8 +18,8 @@ const Home = () => {
           articles.map((article) => (
             <div>
               <p className="font-bold text-xl">{article.title}</p>
+              <img src={import.meta.env.VITE_BASE_URL + '/uploads/' + article.thumbnail[0]} alt="" />
               <FroalaEditorView model={article.body} />
-              {/* <p>{article.body}</p> */}
             </div>
           ))}
       </div>
