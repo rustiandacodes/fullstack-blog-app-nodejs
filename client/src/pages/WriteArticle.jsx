@@ -47,6 +47,8 @@ const WriteArticle = () => {
     });
   };
 
+  // mencoba branch baru
+
   return (
     <div className="mx-auto container py-20">
       <form onSubmit={handleSubmit}>
