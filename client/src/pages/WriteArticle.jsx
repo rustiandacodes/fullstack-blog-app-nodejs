@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { UserContext } from '../context/UserContext';
 import { useNavigate } from 'react-router-dom';
 // froala editor
@@ -11,7 +11,7 @@ import FroalaEditorComponent from 'react-froala-wysiwyg';
 const WriteArticle = () => {
   const [title, setTitle] = useState();
   const [model, setModel] = useState();
-  const [photosNewName, setPhotosNewName] = useState();
+  const [photoFile, setPhotoFile] = useState();
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -21,8 +21,18 @@ const WriteArticle = () => {
     setModel(e);
   };
 
-  const uploadPhoto = (e) => {
-    const files = e.target.files;
+  const storeArticle = (fileName) => {
+    axios.post('/create-article', {
+      owner: user._id,
+      title: title,
+      body: model,
+      thumbnail: fileName,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const files = photoFile;
     const data = new FormData();
     for (let i = 0; i < files.length; i++) {
       data.append('photos', files[i]);
@@ -32,22 +42,10 @@ const WriteArticle = () => {
         headers: { 'Content-type': 'multipart/form-data' },
       })
       .then((response) => {
-        const { data: filenames } = response;
-        setPhotosNewName(filenames);
+        const { data: fileNames } = response;
+        storeArticle(fileNames);
       });
   };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    await axios.post('/create-article', {
-      owner: user._id,
-      title: title,
-      body: model,
-      thumbnail: photosNewName,
-    });
-  };
-
-  // mencoba branch baru
 
   return (
     <div className="mx-auto container py-20">
@@ -58,7 +56,7 @@ const WriteArticle = () => {
         </div>
         <div className="my-5">
           <p className="font-bold mb-2">Thumbnail</p>
-          <input className="border-2 p-5 rounded-lg w-fit" multiple type="file" onChange={uploadPhoto} />
+          <input className="border-2 p-5 rounded-lg w-fit" multiple type="file" onChange={(e) => setPhotoFile(e.target.files)} />
         </div>
         <div className="my-5">
           <p className="font-bold mb-2">Article</p>
