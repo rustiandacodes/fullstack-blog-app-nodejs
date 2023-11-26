@@ -12,13 +12,22 @@ const WriteArticle = () => {
   const [title, setTitle] = useState();
   const [model, setModel] = useState();
   const [photoFile, setPhotoFile] = useState();
+  const [preview, setPreview] = useState();
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
+
+  console.log(preview);
 
   !user ? navigate('/login') : '';
 
   const handleModelChange = (e) => {
     setModel(e);
+    z;
+  };
+
+  const uploadPhoto = (e) => {
+    setPhotoFile(e.target.files);
+    setPreview(URL.createObjectURL(e.target.files[0]));
   };
 
   const storeArticle = (fileName) => {
@@ -56,11 +65,27 @@ const WriteArticle = () => {
         </div>
         <div className="my-5">
           <p className="font-bold mb-2">Thumbnail</p>
-          <input className="border-2 p-5 rounded-lg w-fit" multiple type="file" onChange={(e) => setPhotoFile(e.target.files)} />
+          <div className="flex gap-3">
+            <label className="cursor-pointer h-32 w-52 flex justify-center items-center gap-3 bg-transparent rounded-lg p-4 text-2xl border text-gray-600">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" />
+              </svg>
+              <input onChange={uploadPhoto} multiple type="file" hidden />
+              <span>Upload</span>
+            </label>
+            <div>{preview ? <img className="w-56 h-32 object-cover rounded-lg" src={preview} alt="preview" /> : null}</div>
+          </div>
         </div>
         <div className="my-5">
           <p className="font-bold mb-2">Article</p>
-          <FroalaEditorComponent tag="textarea" onModelChange={handleModelChange} />
+          <FroalaEditorComponent
+            tag="textarea"
+            onModelChange={handleModelChange}
+            config={{
+              placeholderText: 'Edit Your Content Here!',
+              charCounterCount: false,
+            }}
+          />
         </div>
         <div className="flex justify-end">
           <button className="w-full md:w-40 bg-sky-500 text-white py-3 mt-2 rounded-lg font-bold focus:outline-none">Submit</button>
