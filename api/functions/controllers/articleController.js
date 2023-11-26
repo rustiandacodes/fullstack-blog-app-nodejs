@@ -1,10 +1,21 @@
 const Article = require('../model/articleModel');
+const jwt = require('jsonwebtoken');
+const jwtSecret = 'DVVC1OPrPYKJpLTEkJ7RkQ4R1dw5SZxG';
+
+const getUserDataFromToken = (req) => {
+  return new Promise((resolve, reject) => {
+    jwt.verify(req.cookies.token, jwtSecret, {}, async (err, userData) => {
+      if (err) throw err;
+      resolve(userData);
+    });
+  });
+};
 
 // create Article
 const createArticle = async (req, res) => {
   const { title, body, thumbnail, user_id } = req.body;
   const articleDoc = await Article.create({
-    owner: user_id,
+    user: user_id,
     title: title,
     body: body,
     thumbnail: thumbnail,
@@ -43,4 +54,11 @@ const deleteArticle = async (req, res) => {
   res.status(200).json(response);
 };
 
-module.exports = { createArticle, getArticles, getArticle, updateArticle, deleteArticle };
+// get article by user
+const getArticleByUser = async (req, res) => {
+  const userData = await getUserDataFromToken(req);
+  const response = await Article.find({ user: userData.id });
+  res.status(200).json(response);
+};
+
+module.exports = { createArticle, getArticles, getArticle, getArticleByUser, updateArticle, deleteArticle };

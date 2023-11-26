@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const serverless = require('serverless-http');
 
+//upload photos 
 const fs = require('fs');
 const multer = require('multer');
 const photosMiddleware = multer({ dest: 'uploads/' });

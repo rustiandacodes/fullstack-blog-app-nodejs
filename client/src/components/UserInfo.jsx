@@ -6,7 +6,7 @@ import axios from 'axios';
 const UserInfo = ({}) => {
   const [menu, setMenu] = useState(false);
   const { user, setUser } = useContext(UserContext);
-  const refOne = useRef();
+  const refOne = useRef('');
 
   useEffect(() => {
     document.addEventListener('click', handleOutside, true);
@@ -17,14 +17,14 @@ const UserInfo = ({}) => {
     setUser(null);
   };
 
+  const handleMenu = () => {
+    menu === false ? setMenu(true) : setMenu(false);
+  };
+
   const handleOutside = (e) => {
     if (!refOne.current.contains(e.target)) {
       setMenu(false);
     }
-  };
-
-  const handleMenu = () => {
-    menu === false ? setMenu(true) : setMenu(false);
   };
 
   return (
@@ -43,7 +43,7 @@ const UserInfo = ({}) => {
           <div className="flex flex-col gap-2 text-sm">
             <Link>Profile</Link>
             <Link to={'/write'}>Write</Link>
-            <Link>Dashboard</Link>
+            <Link to={'/dashboard'}>Dashboard</Link>
             <span className="font-bold" onClick={logout}>
               Logout
             </span>
