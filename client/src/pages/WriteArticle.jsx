@@ -93,7 +93,6 @@ const WriteArticle = () => {
       </form>
       <div className="my-5">
         <p>{model}</p>
-        {/* <FroalaEditorView model={model} /> */}
       </div>
     </div>
   );

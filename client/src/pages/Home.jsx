@@ -1,11 +1,9 @@
 import axios from 'axios';
 import React, { useEffect, useState, useContext } from 'react';
-import { UserContext } from '../context/UserContext';
 import FroalaEditorView from 'react-froala-wysiwyg/FroalaEditorView';
 
 const Home = () => {
   const [articles, setArticles] = useState([]);
-  const { user } = useContext(UserContext);
 
   useEffect(() => {
     axios.get('/articles').then(({ data }) => setArticles(data));
