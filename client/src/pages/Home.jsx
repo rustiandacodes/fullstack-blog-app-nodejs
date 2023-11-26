@@ -17,7 +17,6 @@ const Home = () => {
             <div>
               <p className="font-bold text-xl">{article.title}</p>
               <img src={import.meta.env.VITE_BASE_URL + '/uploads/' + article.thumbnail} alt="thumbnail" />
-              <p className="bg-red-400">{import.meta.env.VITE_BASE_URL + '/uploads' + article.thumbnail}</p>
               <FroalaEditorView model={article.body} />
             </div>
           ))}

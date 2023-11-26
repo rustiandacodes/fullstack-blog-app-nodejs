@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { UserContext } from '../context/UserContext';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -6,10 +6,21 @@ import axios from 'axios';
 const UserInfo = ({}) => {
   const [menu, setMenu] = useState(false);
   const { user, setUser } = useContext(UserContext);
+  const refOne = useRef();
+
+  useEffect(() => {
+    document.addEventListener('click', handleOutside, true);
+  }, []);
 
   const logout = () => {
     axios.post('/logout');
     setUser(null);
+  };
+
+  const handleOutside = (e) => {
+    if (!refOne.current.contains(e.target)) {
+      setMenu(false);
+    }
   };
 
   const handleMenu = () => {
@@ -19,7 +30,7 @@ const UserInfo = ({}) => {
   return (
     <>
       {/* user menu */}
-      <div className="relative flex gap-2 items-center justify-around py-2 px-2 md:px-3 rounded-full shadow cursor-pointer" onClick={() => handleMenu()}>
+      <div className="relative flex gap-2 items-center justify-around py-2 px-2 md:px-3 rounded-full shadow cursor-pointer" onClick={handleMenu} ref={refOne}>
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
           <path
             strokeLinecap="round"
@@ -29,22 +40,14 @@ const UserInfo = ({}) => {
         </svg>
         <div className="hidden sm:block">{!!user && <span className="capitalize">{user.name}</span>}</div>
         <div className={`${menu === false ? 'hidden' : 'absolute'} p-3 bg-white shadow top-14 -left-7 sm:left-0 -right-7 sm:right-0 rounded-lg`}>
-          <ul className="flex flex-col gap-2 text-sm">
-            <li>
-              <Link>Profile</Link>
-            </li>
-            <li>
-              <Link to={'/write'}>Write</Link>
-            </li>
-            <li>
-              <Link>Dashboard</Link>
-            </li>
-            <li>
-              <span className="font-bold" onClick={logout}>
-                Logout
-              </span>
-            </li>
-          </ul>
+          <div className="flex flex-col gap-2 text-sm">
+            <Link>Profile</Link>
+            <Link to={'/write'}>Write</Link>
+            <Link>Dashboard</Link>
+            <span className="font-bold" onClick={logout}>
+              Logout
+            </span>
+          </div>
         </div>
       </div>
     </>
