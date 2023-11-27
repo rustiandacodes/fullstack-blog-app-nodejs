@@ -11,7 +11,7 @@ import FroalaEditorComponent from 'react-froala-wysiwyg';
 const WriteArticle = () => {
   const [title, setTitle] = useState('');
   const [model, setModel] = useState('');
-  const [thumb, setThumb] = useState('');
+  const [thumbnail, setThumbnail] = useState('');
   const [photoFile, setPhotoFile] = useState();
   const [preview, setPreview] = useState();
   const [updatePreview, setUpdatePreview] = useState();
@@ -19,13 +19,14 @@ const WriteArticle = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  !user ? navigate('/login') : '';
+  !user ? navigate('/login') : null;
 
   useEffect(() => {
     if (id) {
       axios.get('/article/' + id).then(({ data }) => {
         setTitle(data.title);
         setModel(data.body);
+        setThumbnail(data.thumbnail);
         setUpdatePreview(import.meta.env.VITE_BASE_URL + '/uploads/' + data.thumbnail);
       });
     }
@@ -58,34 +59,31 @@ const WriteArticle = () => {
   };
 
   const handleUpdateArticle = (fileNames) => {
-    const thumb = () => {
-      if (fileNames) {
-        return fileNames;
-      }
-      return updatePreview;
-    };
     axios.put('/update-article/' + id, {
       title,
       body: model,
-      thumbnail: thumb(),
+      thumbnail: fileNames,
     });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const files = photoFile;
-    const data = new FormData();
-    for (let i = 0; i < files.length; i++) {
-      data.append('photos', files[i]);
+    if (photoFile) {
+      const files = photoFile;
+      const data = new FormData();
+      for (let i = 0; i < files.length; i++) {
+        data.append('photos', files[i]);
+      }
+      axios
+        .post('/upload', data, {
+          headers: { 'Content-type': 'multipart/form-data' },
+        })
+        .then((response) => {
+          const { data: fileNames } = response;
+          id ? handleUpdateArticle(fileNames) : handleCreateArticle(fileNames);
+        });
     }
-    axios
-      .post('/upload', data, {
-        headers: { 'Content-type': 'multipart/form-data' },
-      })
-      .then((response) => {
-        const { data: fileNames } = response;
-        id ? handleUpdateArticle(fileNames) : handleCreateArticle(fileNames);
-      });
+    handleUpdateArticle(thumbnail);
   };
 
   return (
