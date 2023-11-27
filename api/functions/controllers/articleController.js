@@ -13,9 +13,10 @@ const getUserDataFromToken = (req) => {
 
 // create Article
 const createArticle = async (req, res) => {
-  const { title, body, thumbnail, user_id } = req.body;
+  const { title, body, thumbnail } = req.body;
+  const userData = await getUserDataFromToken(req);
   const articleDoc = await Article.create({
-    user: user_id,
+    user: userData.id,
     title: title,
     body: body,
     thumbnail: thumbnail,
@@ -36,7 +37,8 @@ const getArticle = async (req, res) => {
 
 // update article
 const updateArticle = async (req, res) => {
-  const { id, title, body, thumbnail } = req.body;
+  const { id } = req.params;
+  const { title, body, thumbnail } = req.body;
   const articleDoc = await Article.findById(id);
   articleDoc.set({
     title,

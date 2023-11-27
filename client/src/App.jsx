@@ -21,6 +21,7 @@ const App = () => {
           <Route index element={<Home />} />
           <Route path="/write" element={<WriteArticle />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/update-article/:id" element={<WriteArticle />} />
         </Route>
       </Routes>
     </UserContextProvider>

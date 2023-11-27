@@ -1,8 +1,9 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-
+import { useNavigate } from 'react-router-dom';
 const Dashboard = () => {
   const [articles, setArticles] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios.get('/article-user').then(({ data }) => setArticles(data));
@@ -42,7 +43,9 @@ const Dashboard = () => {
                 <span className="bg-red-500 w-20 text-center text-sm text-white font-semibold py-2 rounded-lg" onClick={() => deleteArticle(article._id)}>
                   Delete
                 </span>
-                <span className="bg-sky-500 w-20 text-center text-sm text-white font-semibold py-2 rounded-lg">Update</span>
+                <span className="bg-sky-500 w-20 text-center text-sm text-white font-semibold py-2 rounded-lg" onClick={() => navigate('/update-article/' + article._id)}>
+                  Update
+                </span>
               </div>
             </div>
           ))}
