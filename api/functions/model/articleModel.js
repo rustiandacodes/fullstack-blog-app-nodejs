@@ -1,11 +1,14 @@
 const mongoose = require('mongoose');
 
-const ArticleSchema = new mongoose.Schema({
-  owner: { type: mongoose.Schema.Types.ObjectId, ref: 'mernblog-User' },
-  title: String,
-  body: String,
-  thumbnail: [String],
-});
+const ArticleSchema = new mongoose.Schema(
+  {
+    user: { type: mongoose.Schema.Types.ObjectId, required: true },
+    title: String,
+    body: String,
+    thumbnail: [String],
+  },
+  { timestamps: true }
+);
 
 const ArticleModel = mongoose.model('mernblog-Article', ArticleSchema);
 

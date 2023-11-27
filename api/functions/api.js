@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const serverless = require('serverless-http');
 
+//upload photos requirments
 const fs = require('fs');
 const multer = require('multer');
 const photosMiddleware = multer({ dest: 'uploads/' });
@@ -31,8 +32,10 @@ app.use((req, res, next) => {
   next();
 });
 
-// uploads photos
+// shows photos
 app.use('/.netlify/functions/api/uploads', express.static(__dirname + '/uploads'));
+
+// upload photos
 app.post('/.netlify/functions/api/upload', photosMiddleware.array('photos', 100), (req, res) => {
   const uploadedFiles = [];
   for (let i = 0; i < req.files.length; i++) {
@@ -44,6 +47,13 @@ app.post('/.netlify/functions/api/upload', photosMiddleware.array('photos', 100)
     uploadedFiles.push(newPath.replace('uploads', ''));
   }
   res.json(uploadedFiles);
+});
+
+// delete photos
+app.post('/.netlify/functions/api/delete-image', async (req) => {
+  const { fileNames } = req.body;
+  const path = __dirname + '/uploads/' + fileNames;
+  fs.unlinkSync(path);
 });
 
 // routes
