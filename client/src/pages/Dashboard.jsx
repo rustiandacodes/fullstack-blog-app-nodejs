@@ -9,10 +9,13 @@ const Dashboard = () => {
     axios.get('/article-user').then(({ data }) => setArticles(data));
   }, []);
 
-  const deleteArticle = async (id) => {
-    await axios.delete('/delete-article/' + id).then(({ data }) => {
-      const filterArticle = articles.filter((article) => article._id !== data._id);
+  const deleteArticle = async (article) => {
+    await axios.delete('/delete-article/' + article._id).then(({ data }) => {
+      const filterArticle = articles.filter((x) => x._id !== data._id);
       setArticles(filterArticle);
+      axios.post('/delete-image', {
+        fileNames: data.thumbnail[0],
+      });
     });
   };
 
@@ -40,7 +43,7 @@ const Dashboard = () => {
                 </div>
               </div>
               <div className="flex flex-col items-center justify-center gap-3 w-30">
-                <span className="bg-red-500 w-20 text-center text-sm text-white font-semibold py-2 rounded-lg" onClick={() => deleteArticle(article._id)}>
+                <span className="bg-red-500 w-20 text-center text-sm text-white font-semibold py-2 rounded-lg" onClick={() => deleteArticle(article)}>
                   Delete
                 </span>
                 <span className="bg-sky-500 w-20 text-center text-sm text-white font-semibold py-2 rounded-lg" onClick={() => navigate('/update-article/' + article._id)}>

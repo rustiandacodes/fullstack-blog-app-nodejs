@@ -58,11 +58,11 @@ const WriteArticle = () => {
     });
   };
 
-  const handleUpdateArticle = (fileNames) => {
+  const handleUpdateArticle = (thumbnail) => {
     axios.put('/update-article/' + id, {
       title,
       body: model,
-      thumbnail: fileNames,
+      thumbnail,
     });
   };
 
@@ -82,8 +82,9 @@ const WriteArticle = () => {
           const { data: fileNames } = response;
           id ? handleUpdateArticle(fileNames) : handleCreateArticle(fileNames);
         });
+    } else {
+      handleUpdateArticle(thumbnail);
     }
-    handleUpdateArticle(thumbnail);
   };
 
   return (
