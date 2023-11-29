@@ -123,9 +123,6 @@ const WriteArticle = () => {
           <button className="w-full md:w-40 bg-sky-500 text-white py-3 mt-2 rounded-lg font-bold focus:outline-none">Submit</button>
         </div>
       </form>
-      <div className="my-5">
-        <p>{model}</p>
-      </div>
     </div>
   );
 };

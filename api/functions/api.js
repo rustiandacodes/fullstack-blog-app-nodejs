@@ -16,14 +16,14 @@ const articleRoutes = require('./routes/articleRoutes');
 // application
 const app = express();
 
-// middleware
-app.use(express.json());
 // cookies permission
 app.use(cookieParser());
+// middleware
+app.use(express.json());
 // cookie parser
 app.use((req, res, next) => {
   // Allow CORS Origin
-  res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:5173');
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   res.setHeader('Access-Control-Allow-Credentials', 'true');

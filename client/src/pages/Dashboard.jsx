@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 const Dashboard = () => {
   const [articles, setArticles] = useState([]);
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ const Dashboard = () => {
       <div className="flex flex-col gap-3 justify-between">
         {!!articles &&
           articles.map((article) => (
-            <div key={article._id} className="flex gap-3 p-5 justify-between h-36 shadow rounded bg-gray-50 cursor-pointer">
+            <div key={article._id} className="flex gap-3 p-5 justify-between h-36 shadow rounded bg-gray-50 cursor-pointer" onClick={() => navigate('/article/' + article._id)}>
               <div className="flex gap-3">
                 <img className="w-60 h-full rounded object-cover" src={import.meta.env.VITE_BASE_URL + '/uploads/' + article.thumbnail} alt="thumbnail" />
                 <div>

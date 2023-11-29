@@ -7,8 +7,6 @@ const Register = () => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
-  console.log(name, email, password);
-
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
