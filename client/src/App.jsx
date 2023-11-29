@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import WriteArticle from './pages/WriteArticle';
 import Dashboard from './pages/Dashboard';
+import ArticlePage from './pages/ArticlePage';
 
 axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 axios.defaults.withCredentials = true;
@@ -19,6 +20,7 @@ const App = () => {
         <Route path="/Register" element={<Register />} />
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
+          <Route path="/article/:id" element={<ArticlePage />} />
           <Route path="/write" element={<WriteArticle />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/update-article/:id" element={<WriteArticle />} />
