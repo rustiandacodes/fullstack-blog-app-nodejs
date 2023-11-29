@@ -14,7 +14,7 @@ const ArticlePage = () => {
 
   return (
     <div className="bg-gray-100">
-      <div className="max-w-4xl bg-gray-50 px-20 mx-auto py-20">
+      <div className="max-w-4xl bg-gray-50 px-20 mx-auto py-40">
         <h2 className="font-bold text-5xl">{article.title}</h2>
         <img className="w-full py-10" src={baseImgUrl + article.thumbnail} alt="thumbnail" />
         <FroalaEditorView model={article.body} />

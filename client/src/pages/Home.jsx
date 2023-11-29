@@ -11,7 +11,7 @@ const Home = () => {
 
   return (
     <>
-      <div className="container mx-auto my-10">
+      <div className="container mx-auto py-36">
         {!!articles &&
           articles.map((article) => (
             <div>

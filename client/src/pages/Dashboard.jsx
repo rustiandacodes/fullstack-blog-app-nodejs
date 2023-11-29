@@ -21,7 +21,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto py-20">
+    <div className="max-w-6xl mx-auto  py-36">
       <h1 className="text-2xl font-bold mb-5">Dashboard</h1>
       <div className="flex flex-col gap-3 justify-between">
         {!!articles &&
