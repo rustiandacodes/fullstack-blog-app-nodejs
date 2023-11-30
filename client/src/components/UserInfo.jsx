@@ -41,7 +41,7 @@ const UserInfo = ({}) => {
         <div className="hidden sm:block">{!!user && <span className="capitalize">{user.name}</span>}</div>
         <div className={`${menu === false ? 'hidden' : 'absolute'} p-3 bg-white shadow top-14 -left-7 sm:left-0 -right-7 sm:right-0 rounded-lg`}>
           <div className="flex flex-col gap-2 text-sm">
-            <Link>Profile</Link>
+            <Link to={'/profile'}>Profile</Link>
             <Link to={'/write'}>Write</Link>
             <Link to={'/dashboard'}>Dashboard</Link>
             <span className="font-bold" onClick={logout}>

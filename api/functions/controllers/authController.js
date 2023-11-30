@@ -1,9 +1,17 @@
-// const mongoose = require('mongoose');
 const User = require('../model/userModel');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const bcryptSalt = bcrypt.genSaltSync(10);
 const jwtSecret = 'DVVC1OPrPYKJpLTEkJ7RkQ4R1dw5SZxG';
+
+const getUserDataFromToken = (req) => {
+  return new Promise((resolve, reject) => {
+    jwt.verify(req.cookies.token, jwtSecret, {}, async (err, userData) => {
+      if (err) throw err;
+      resolve(userData);
+    });
+  });
+};
 
 const register = async (req, res) => {
   const { name, email, password } = req.body;
@@ -54,4 +62,17 @@ const profile = (req, res) => {
   }
 };
 
-module.exports = { register, login, profile, logout };
+// update profile
+const updateProfile = async (req, res) => {
+  const { name, email } = req.body;
+  const userData = await getUserDataFromToken(req);
+  const userDoc = await User.findById(userData.id);
+  userDoc.set({
+    name,
+    email,
+  });
+  const response = await userDoc.save();
+  res.status(200).json(response);
+};
+
+module.exports = { register, login, profile, logout, updateProfile };
