@@ -88,7 +88,7 @@ const WriteArticle = () => {
   };
 
   return (
-    <div className="mx-auto container py-20">
+    <div className="mx-auto container py-40 min-h-screen">
       <form onSubmit={handleSubmit}>
         <div>
           <p className="font-bold mb-2">Title</p>

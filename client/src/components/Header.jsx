@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 const Header = () => {
   const { user } = useContext(UserContext);
   return (
-    <div className="fixed w-full shadow-sm py-8 px-10 md:px-0 bg-white">
+    <div className="fixed w-full shadow-sm py-8 px-10 md:px-0 bg-white z-10">
       {/* logo */}
       <Link to={'/'} className="container mx-auto flex justify-between items-center cursor-pointer">
         <div className="flex gap-3 items-center">
