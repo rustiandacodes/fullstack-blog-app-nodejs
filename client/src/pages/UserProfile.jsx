@@ -1,20 +1,24 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { UserContext } from '../context/UserContext';
 import { GeneralContext } from '../context/GeneralContext';
 import profileImg from '../../assets/user.png';
-import FormPopUp from '../components/FormPopUp';
+import FormPopUp from '../components/FormChangePass';
+import { useNavigate } from 'react-router-dom';
 
 const UserProfile = () => {
   const { user } = useContext(UserContext);
   const { popUp, setPopUp } = useContext(GeneralContext);
+  const navigate = useNavigate();
   const baseImgUrl = import.meta.env.VITE_BASE_URL + '/uploads/';
+
+  !user ? navigate('/login') : null;
 
   return (
     <div className="relative container h-screen mx-auto py-40">
-      {popUp ? <FormPopUp /> : null}
+      {popUp ? <FormPopUp id={user._id} /> : null}
 
       {!!user && (
-        <div className="max-w-md mx-auto flex flex-col gap-4 border p-8 rounded-xl">
+        <div className="md:max-w-md w-full mx-auto flex flex-col gap-4 border p-8 rounded-xl">
           <div className="flex justify-center">
             <img className="w-44" src={!user.photo ? profileImg : baseImgUrl + user.photo[0]} alt="profile-image" />
           </div>

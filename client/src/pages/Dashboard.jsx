@@ -6,6 +6,8 @@ const Dashboard = () => {
   const [articles, setArticles] = useState([]);
   const navigate = useNavigate();
 
+  !user ? navigate('/login') : null;
+
   useEffect(() => {
     axios.get('/article-user').then(({ data }) => setArticles(data));
   }, []);

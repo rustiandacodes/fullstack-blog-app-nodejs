@@ -78,7 +78,6 @@ const updateProfile = async (req, res) => {
   res.status(200).json(response);
 };
 
-// get password
 const changePassword = async (req, res) => {
   const { id, newPassword, lastPassword } = req.body;
   const userDoc = await User.findById(id);
@@ -87,9 +86,10 @@ const changePassword = async (req, res) => {
     userDoc.set({
       password: bcrypt.hashSync(newPassword, bcryptSalt),
     });
-    const { name, email } = userDoc.save();
-    res.status(200).json(name, email);
+    const response = userDoc.save();
+    res.status(200).json(response);
+  } else {
+    res.status(304).json('wrong password');
   }
 };
-
 module.exports = { register, login, profile, logout, updateProfile, changePassword };
