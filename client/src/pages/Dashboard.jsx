@@ -6,6 +6,8 @@ const Dashboard = () => {
   const [articles, setArticles] = useState([]);
   const navigate = useNavigate();
 
+  !user ? navigate('/login') : null;
+
   useEffect(() => {
     axios.get('/article-user').then(({ data }) => setArticles(data));
   }, []);
@@ -21,7 +23,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="max-w-6xl min-h-screen mx-auto py-36">
+    <div className="max-w-4xl min-h-screen mx-auto py-36">
       <h1 className="text-2xl font-bold mb-5">Dashboard</h1>
       <div className="flex flex-col gap-6 justify-between">
         {!!articles &&

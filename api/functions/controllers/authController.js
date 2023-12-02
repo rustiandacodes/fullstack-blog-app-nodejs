@@ -1,17 +1,28 @@
-// const mongoose = require('mongoose');
 const User = require('../model/userModel');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const bcryptSalt = bcrypt.genSaltSync(10);
 const jwtSecret = 'DVVC1OPrPYKJpLTEkJ7RkQ4R1dw5SZxG';
 
+const getUserDataFromToken = (req) => {
+  return new Promise((resolve, reject) => {
+    jwt.verify(req.cookies.token, jwtSecret, {}, async (err, userData) => {
+      if (err) throw err;
+      resolve(userData);
+    });
+  });
+};
+
 const register = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, photos, address, phone } = req.body;
   try {
     const userDoc = await User.create({
       name,
       email,
       password: bcrypt.hashSync(password, bcryptSalt),
+      photos,
+      address,
+      phone,
     });
     res.json(userDoc);
   } catch (error) {
@@ -46,12 +57,39 @@ const profile = (req, res) => {
   if (token) {
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
       if (err) throw err;
-      const { name, email, _id } = await User.findById(userData.id);
-      res.json({ name, email, _id });
+      const { name, email, phone, address, _id } = await User.findById(userData.id);
+      res.json({ name, email, phone, address, _id });
     });
   } else {
     res.json(null);
   }
 };
 
-module.exports = { register, login, profile, logout };
+// update profile
+const updateProfile = async (req, res) => {
+  const { name, email } = req.body;
+  const userData = await getUserDataFromToken(req);
+  const userDoc = await User.findById(userData.id);
+  userDoc.set({
+    name,
+    email,
+  });
+  const response = await userDoc.save();
+  res.status(200).json(response);
+};
+
+const changePassword = async (req, res) => {
+  const { id, newPassword, lastPassword } = req.body;
+  const userDoc = await User.findById(id);
+  const passOk = bcrypt.compareSync(lastPassword, userDoc.password);
+  if (passOk) {
+    userDoc.set({
+      password: bcrypt.hashSync(newPassword, bcryptSalt),
+    });
+    const response = userDoc.save();
+    res.status(200).json(response);
+  } else {
+    res.status(304).json('wrong password');
+  }
+};
+module.exports = { register, login, profile, logout, updateProfile, changePassword };
