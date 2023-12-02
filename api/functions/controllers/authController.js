@@ -14,12 +14,15 @@ const getUserDataFromToken = (req) => {
 };
 
 const register = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, photos, address, phone } = req.body;
   try {
     const userDoc = await User.create({
       name,
       email,
       password: bcrypt.hashSync(password, bcryptSalt),
+      photos,
+      address,
+      phone,
     });
     res.json(userDoc);
   } catch (error) {
@@ -54,8 +57,8 @@ const profile = (req, res) => {
   if (token) {
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
       if (err) throw err;
-      const { name, email, _id } = await User.findById(userData.id);
-      res.json({ name, email, _id });
+      const { name, email, phone, address, _id } = await User.findById(userData.id);
+      res.json({ name, email, phone, address, _id });
     });
   } else {
     res.json(null);
@@ -75,4 +78,18 @@ const updateProfile = async (req, res) => {
   res.status(200).json(response);
 };
 
-module.exports = { register, login, profile, logout, updateProfile };
+// get password
+const changePassword = async (req, res) => {
+  const { id, newPassword, lastPassword } = req.body;
+  const userDoc = await User.findById(id);
+  const passOk = bcrypt.compareSync(lastPassword, userDoc.password);
+  if (passOk) {
+    userDoc.set({
+      password: bcrypt.hashSync(newPassword, bcryptSalt),
+    });
+    const { name, email } = userDoc.save();
+    res.status(200).json(name, email);
+  }
+};
+
+module.exports = { register, login, profile, logout, updateProfile, changePassword };

@@ -1,13 +1,18 @@
 import React, { useContext, useState } from 'react';
 import { UserContext } from '../context/UserContext';
+import { GeneralContext } from '../context/GeneralContext';
 import profileImg from '../../assets/user.png';
+import FormPopUp from '../components/FormPopUp';
 
 const UserProfile = () => {
   const { user } = useContext(UserContext);
+  const { popUp, setPopUp } = useContext(GeneralContext);
   const baseImgUrl = import.meta.env.VITE_BASE_URL + '/uploads/';
 
   return (
-    <div className="container h-screen mx-auto py-40">
+    <div className="relative container h-screen mx-auto py-40">
+      {popUp ? <FormPopUp /> : null}
+
       {!!user && (
         <div className="max-w-md mx-auto flex flex-col gap-4 border p-8 rounded-xl">
           <div className="flex justify-center">
@@ -31,9 +36,11 @@ const UserProfile = () => {
           </div>
         </div>
       )}
-      <div className="flex gap-5 justify-center py-10 text-white font-semibold cursor-pointer">
-        <span className="bg-sky-500 p-3 rounded-md">Edit Profile</span>
-        <span className="bg-red-500 p-3 rounded-md">Change Password</span>
+      <div className=" flex flex-col md:flex-row gap-3 justify-center items-center py-10 text-white font-semibold cursor-pointer">
+        <div className="bg-sky-500 border-2 border-sky-500 p-3 md:w-48 w-full text-center rounded-md">Edit Profile</div>
+        <div className=" text-sky-500 border-2 border-sky-500 p-3 md:w-48 w-full text-center rounded-md" onClick={() => setPopUp(true)}>
+          Change Password
+        </div>
       </div>
     </div>
   );

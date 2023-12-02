@@ -14,6 +14,8 @@ const Register = () => {
         name,
         email,
         password,
+        address: '',
+        phone: '',
       });
       alert('Register successfull, Now you can Login!');
     } catch (error) {

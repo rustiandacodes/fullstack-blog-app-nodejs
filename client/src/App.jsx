@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { Routes, Route } from 'react-router-dom';
 import { UserContextProvider } from './context/UserContext';
+import { GeneralContextProvider } from './context/GeneralContext';
 import Layout from './components/Layout';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -16,18 +17,20 @@ axios.defaults.withCredentials = true;
 const App = () => {
   return (
     <UserContextProvider>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/Register" element={<Register />} />
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="/article/:id" element={<ArticlePage />} />
-          <Route path="/write" element={<WriteArticle />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/update-article/:id" element={<WriteArticle />} />
-          <Route path="/profile" element={<UserProfile />} />
-        </Route>
-      </Routes>
+      <GeneralContextProvider>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/Register" element={<Register />} />
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="/article/:id" element={<ArticlePage />} />
+            <Route path="/write" element={<WriteArticle />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/update-article/:id" element={<WriteArticle />} />
+            <Route path="/profile" element={<UserProfile />} />
+          </Route>
+        </Routes>
+      </GeneralContextProvider>
     </UserContextProvider>
   );
 };
