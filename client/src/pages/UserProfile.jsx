@@ -2,12 +2,13 @@ import React, { useContext } from 'react';
 import { UserContext } from '../context/UserContext';
 import { GeneralContext } from '../context/GeneralContext';
 import profileImg from '../../assets/user.png';
-import FormPopUp from '../components/FormChangePass';
+import FormChangePass from '../components/FormChangePass';
+import FormUpdateProfile from '../components/FormUpdateProfile';
 import { useNavigate } from 'react-router-dom';
 
 const UserProfile = () => {
   const { user } = useContext(UserContext);
-  const { popUp, setPopUp } = useContext(GeneralContext);
+  const { setPopUpChangePassword, popUpChangePassword, popUpUpdateProfile, setPopUpUpdateProfile } = useContext(GeneralContext);
   const navigate = useNavigate();
   const baseImgUrl = import.meta.env.VITE_BASE_URL + '/uploads/';
 
@@ -15,7 +16,8 @@ const UserProfile = () => {
 
   return (
     <div className="relative container h-screen mx-auto py-40">
-      {popUp ? <FormPopUp id={user._id} /> : null}
+      {popUpChangePassword ? <FormChangePass id={user._id} /> : null}
+      {popUpUpdateProfile ? <FormUpdateProfile /> : null}
 
       {!!user && (
         <div className="md:max-w-md w-full mx-auto flex flex-col gap-4 border p-8 rounded-xl">
@@ -40,9 +42,9 @@ const UserProfile = () => {
           </div>
         </div>
       )}
-      <div className=" flex flex-col md:flex-row gap-3 justify-center items-center py-10 text-white font-semibold cursor-pointer">
+      <div className=" flex flex-col md:flex-row gap-3 justify-center items-center py-10 text-white font-semibold cursor-pointer" onClick={() => setPopUpUpdateProfile(true)}>
         <div className="bg-sky-500 border-2 border-sky-500 p-3 md:w-48 w-full text-center rounded-md">Edit Profile</div>
-        <div className=" text-sky-500 border-2 border-sky-500 p-3 md:w-48 w-full text-center rounded-md" onClick={() => setPopUp(true)}>
+        <div className=" text-sky-500 border-2 border-sky-500 p-3 md:w-48 w-full text-center rounded-md" onClick={() => setPopUpChangePassword(true)}>
           Change Password
         </div>
       </div>

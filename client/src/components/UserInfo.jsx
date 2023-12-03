@@ -6,7 +6,7 @@ import axios from 'axios';
 
 const UserInfo = ({}) => {
   const { user, setUser } = useContext(UserContext);
-  const { showMenuPop, setShowMenuPop, refOne } = useContext(GeneralContext);
+  const { showMenuPop, setShowMenuPop, refMenu } = useContext(GeneralContext);
 
   const logout = () => {
     axios.post('/logout');
@@ -20,7 +20,7 @@ const UserInfo = ({}) => {
   return (
     <>
       {/* user menu */}
-      <div className="relative flex gap-2 items-center justify-around py-2 px-2 md:px-3 rounded-full shadow cursor-pointer" onClick={handleMenu} ref={refOne}>
+      <div className="relative flex gap-2 items-center justify-around py-2 px-2 md:px-3 rounded-full shadow cursor-pointer" onClick={handleMenu} ref={refMenu}>
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
           <path
             strokeLinecap="round"

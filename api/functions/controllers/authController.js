@@ -67,12 +67,14 @@ const profile = (req, res) => {
 
 // update profile
 const updateProfile = async (req, res) => {
-  const { name, email } = req.body;
+  const { name, email, phone, address } = req.body;
   const userData = await getUserDataFromToken(req);
   const userDoc = await User.findById(userData.id);
   userDoc.set({
     name,
     email,
+    phone,
+    address,
   });
   const response = await userDoc.save();
   res.status(200).json(response);
@@ -89,7 +91,7 @@ const changePassword = async (req, res) => {
     const response = userDoc.save();
     res.status(200).json(response);
   } else {
-    res.status(304).json('wrong password');
+    res.json('Please enter the correct password!');
   }
 };
 module.exports = { register, login, profile, logout, updateProfile, changePassword };
